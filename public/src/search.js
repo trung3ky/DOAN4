@@ -78,13 +78,15 @@ const rowUser = (id) => {
     });
 }
 
-const addFriend = (id) => {
+const addFriend = (idFriend) => {
     var idUser = idUser1
+    var typebtn = $('.friend' + idFriend).getValue
+    console.log(typebtn)
     $.ajax({
         url: "/addFriend",
         type: "POST",
         data: {
-            friendId: id,
+            friendId: idFriend,
             idUser: idUser
         },
         success: function(result) {
@@ -95,6 +97,7 @@ const addFriend = (id) => {
             })
         }
     });
+    console.log()
 }
 
 $(function() {
