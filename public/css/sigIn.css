@@ -158,6 +158,13 @@ body {
     font-size: 20px;
     color: #606771;
 }
+.avatar {
+    display: flex;
+    justify-content: center;
+}
+.avatar .avatar_user {
+    border-radius: 50%;
+}
 
 .header div i:hover {
     cursor: pointer;

@@ -18,7 +18,7 @@ module.exports = function(app) {
 
     app.get('/search', function(req, res, next) {
         var regex = req.query["term"];
-        var searchName = "select * from user where name like '%" + regex + "%'";
+        var searchName = "select * from users where name like '%" + regex + "%'";
         connection.query(searchName, function(err, result) {
             if (err) {
                 throw err;

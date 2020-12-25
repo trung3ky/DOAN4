@@ -6,12 +6,9 @@ var md5 = require('md5');
 var connection = require('./db');
 const e = require('express');
 
-
-var urlencodeParser = bodyParser.urlencoded({ extended: false }); // đọc requesst của người dùng theo kiểu form
+// đọc requesst của người dùng theo kiểu form
 var parserJson = bodyParser.json();
-
-
-
+var urlencodeParser = bodyParser.urlencoded({ extended: false }); 
 
 module.exports = function(app) {
     app.use(session({
@@ -26,12 +23,12 @@ module.exports = function(app) {
         if (req.cookies.user != null) {
             res.redirect('/index');
         } else {
-            var sql = "select phone from user";
+            var sql = "select phone from users";
             connection.query(sql, function(err, result) {
                 if (err) {
                     throw err;
                 }
-                res.render("sigIn", { data: JSON.stringify(result), message: req.flash('user') });
+                res.render("sigIn", { data: JSON.stringify(result), message: req.flash('users') });
             });
         }
 
@@ -39,10 +36,10 @@ module.exports = function(app) {
     });
 
     app.post('/xulydangnhap', urlencodeParser, function(req, res) {
-        var username = req.body.username;
+        var name = req.body.username;
         var pass = req.body.password;
         var hashPass = md5(pass);
-        var sql = "select * from user where phone = '" + username + "' and password = '" + hashPass + "'";
+        var sql = "select * from users where phone = '" + name + "' and password = '" + hashPass + "'";
         connection.query(sql, function(err, result) {
             if (err) {
                 throw err;
@@ -60,47 +57,61 @@ module.exports = function(app) {
     });
 
     app.post('/xulydangky', urlencodeParser, function(req, res) {
-        var surname = req.body.surname;
         var name = req.body.name;
         var phone = req.body.phone;
+        var birthday = req.body.date;
         var password = req.body.password;
         var hashPass = md5(password);
-        var birthday = req.body.date;
         var gender = req.body.gender;
         var date = new Date();
+        
         //ngày user tạo tài khoản
-        var startdate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-
-        if (surname == null || name == null || phone == null || password == null || birthday == null || gender == null || startdate == null) {
+        var createdDay = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        
+        if (name == null || phone == null || birthday == null 
+            || password == null || gender == null) {
             res.redirect('/dangnhap');
+      
         } else {
-            var sqlcheckphone = "select * from user where phone = '" + phone + "'";
+            var sqlcheckphone = "select * from users where phone = '" + phone + "'";
             connection.query(sqlcheckphone, function(err, result) {
                 if (err) {
                     throw err;
                 }
                 if (result.length > 0) {
-                    res.send("số điện thoại đã tồn tại");
+                    // res.send("số điện thoại đã tồn tại");
                     res.redirect("/dangnhap");
                 } else {
-                    //thêm người dùng
-                    var sql = "insert into user(surname, name, phone, password, gender, startdate, image, birthday) values ('" + surname + "' , '" + name + "', '" + phone + "', '" + hashPass + "', '" + gender + "', '" + startdate + "', '', '" + birthday + "')";
-                    connection.query(sql, function(err, resull) {
-                        if (err) {
-                            throw err;
-                        }
-                        //thêm xong lấy dữ liệu người dùng ra lại bằng phone vừa đăng ký
-                        var data = "select * from user where phone = '" + phone + "'";
-                        connection.query(data, function(err, resultdata) {
-                            if (err) {
-                                throw err;
-                            }
-                            //tạo cookeie với name và id của người dùng.
-                            res.cookie('user', [resultdata[0].name, resultdata[0].id]);
-                            req.flash('userSigin', "bạn đã đăng ký thành công");
-                            res.redirect("/index");
-                        });
-                    });
+                    //thêm người dùng  
+                   try {
+                    var sql =
+                    "insert into users(name, phone, birthday,password,gender, created)"
+                   +"values('" + name + "' ,'" + phone + "','" + birthday + "','" +
+                    hashPass + "', '" + gender + "','" + createdDay + "')";
+
+                   connection.query(sql, function(err, result) {
+                       if (err) {
+                           throw err;
+                       }
+                       //thêm xong lấy dữ liệu người dùng ra lại bằng phone vừa đăng ký
+                       var data = "select * from users where phone = '" + phone + "'";
+                       connection.query(data, function(err, resultdata) {
+                           if (err) {
+                               throw err;
+                           }
+                           //tạo cookie với name và id của người dùng.
+                           res.cookie('user', [resultdata[0].name, resultdata[0].id]);
+                           req.flash('userSigin', "bạn đã đăng ký thành công");
+                           
+                           
+                           res.redirect("/index");
+                       });
+                   });
+
+                   } catch (error) {
+                    console.error(error);
+                   }
+                  
 
                 }
             });

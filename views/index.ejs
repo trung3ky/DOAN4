@@ -59,7 +59,7 @@
         });
         $(document).ready(function() {
             $("input").focusin(function() {
-
+                $('#list-suggesstion').html('<div style="text-align: center;padding-top:20px"><div style="font-size: 18px;color: #F1FFFF">Không tìm thấy kết quả</div><div style="padding: 5px 10px 0px 10px">chúng tôi không tìm được kết quả nào cho "".Hãy thử kiểm tra chính tả hoặc dùng từ hoàn chỉnh </div></div>');
             });
             $("input").focusout(function() {
                 $('#text').html('');
