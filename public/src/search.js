@@ -14,6 +14,53 @@ $(document).ready(function() {
     });
 });
 
+const checkFriend = (idSender, idReceiver) => {
+    $.ajax({
+        url: "/checkFriend",
+        type: "POST",
+        data: {
+            idSender: idSender,
+            idReceiver: idReceiver
+        },
+        success: (result) => {
+            $.each(result, function(key, val) {
+                if (val.status == "1") {
+                    $('.friend' + idReceiver).html('<i class="fas fa-check"></i><span> Bạn bè</span>')
+                } else if (val.status == "0") {
+                    if (val.idSender == idSender) {
+                        $('.friend' + idReceiver).html('<i class="fas fa-user-times"></i><span> Đã gửi lời mời</span>')
+                    } else if (val.idReceiver == idSender) {
+                        $('.friend' + idReceiver).html('Xác Nhận')
+                        $('.huy' + idReceiver).html('Hủy')
+
+                    }
+                }
+            })
+        }
+    })
+}
+
+const buttonFriend = (id) => {
+    var idUser = idUser1;
+    $.ajax({
+        url: "/friend",
+        type: "POST",
+        data: {
+            userId: idUser
+        },
+        success: function(result) {
+            $.each(result, function(key, val) {
+                var friends = val.friend.split(',')
+                if (friends.includes(id + "")) {
+                    checkFriend(idUser, id)
+                } else {
+                    $('.friend' + id).html('<i class="fas fa-user-plus"></i><span> Thêm bạn bè</span>')
+                }
+            })
+        }
+    });
+}
+
 const rowUser = (id) => {
     $.ajax({
         url: "/user",
@@ -32,11 +79,13 @@ const rowUser = (id) => {
 }
 
 const addFriend = (id) => {
+    var idUser = idUser1
     $.ajax({
         url: "/addFriend",
         type: "POST",
         data: {
-            friendId: id
+            friendId: id,
+            idUser: idUser
         },
         success: function(result) {
             $.each(result, function(key, val) {
@@ -47,8 +96,6 @@ const addFriend = (id) => {
         }
     });
 }
-
-
 
 $(function() {
     $("#searchName").autocomplete({
