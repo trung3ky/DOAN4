@@ -13,7 +13,11 @@
     <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
     <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+    <script src="assets/src/search.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script defer src="assets/src/send.js"></script>
     <script>
+<<<<<<< HEAD
         $(function() {
             $("#searchName").autocomplete({
                 source: function(request, response) {
@@ -67,6 +71,9 @@
                 $(this).val("")
             });
         });
+=======
+        var idUser1 = "<%= idUser%>";
+>>>>>>> 6ca5be1d2636874051fc97519e0d1a2ab6c63a6f
     </script>
 </head>
 
@@ -115,17 +122,46 @@
                         </div>
                     </div>
                 </div>
-                <div class="search">
-                    <i class="fas fa-search"></i>
-                    <input maxlength="20" class="searchName" name="searchName" type="text" id="searchName" value="" placeholder="Tìm kiếm trên Messenger">
-                    <div id="suggesstion-box">
+                <div id="focus">
+                    <div class="search">
+                        <i class="fas fa-search"></i>
+                        <input maxlength="20" class="searchName" name="searchName" type="text" id="searchName" value="" placeholder="Tìm kiếm trên Messenger">
+                    </div>
+                    <div id="suggesstion-box" style="display: block;" class="suggesstion-box">
                         <div id="text"></div>
                         <div id="list-suggesstion"></div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="container-right"></div>
+        <div class="container-right">
+            <div class="top-r">
+                <div class="name-receiver" style="color: white;">
+                    <div class="row">
+                        <div class="col-md-10"></div>
+                        <div class="col-md-2"></div>
+                    </div>
+                </div>
+                <div class="chat">
+                    <div class="content-chat">
+                        <div class="content">
+                            <div class="sender"></div>
+                            <div class="receiver"></div>
+                        </div>
+                        <div class="content-send">
+                            <div class="row">
+                                <div class="col-md-1"><i class="fas fa-plus"></i></div>
+                                <div class="col-md-1"><i class="far fa-smile-wink"></i></div>
+                                <div class="col-md-1"><i class="fas fa-image"></i></div>
+                                <div class="col-md-8"><input class="message" name="message" id="message" placeholder="Nhập nội dung của bản" type="text"></div>
+                                <div class="col-md-1"><button class="send">send</button></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-chat"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
 </body>

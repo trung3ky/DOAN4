@@ -79,7 +79,10 @@ module.exports = function(app) {
                     throw err;
                 }
                 if (result.length > 0) {
+<<<<<<< HEAD
                     // res.send("số điện thoại đã tồn tại");
+=======
+>>>>>>> 6ca5be1d2636874051fc97519e0d1a2ab6c63a6f
                     res.redirect("/dangnhap");
                 } else {
                     //thêm người dùng  
