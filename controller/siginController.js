@@ -80,7 +80,6 @@ module.exports = function(app) {
                     throw err;
                 }
                 if (result.length > 0) {
-                    res.send("số điện thoại đã tồn tại");
                     res.redirect("/dangnhap");
                 } else {
                     //thêm người dùng
