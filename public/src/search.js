@@ -77,11 +77,7 @@ const rowUser = (id) => {
         }
     });
 }
-
-const addFriend = (idFriend) => {
-    var idUser = idUser1
-    var typebtn = $('.friend' + idFriend).getValue
-    console.log(typebtn)
+const add = (idFriend, idUser) => {
     $.ajax({
         url: "/addFriend",
         type: "POST",
@@ -97,7 +93,26 @@ const addFriend = (idFriend) => {
             })
         }
     });
-    console.log()
+    console.log("add")
+}
+
+const addFriend = (idFriend) => {
+    var idUser = idUser1
+    var typebtn = document.getElementById('friend' + idFriend).textContent
+    console.log(typebtn)
+    if (typebtn + "" === "Thêm bạn bè") {
+        add(idFriend, idUser)
+        console.log("add")
+    }
+    if (typebtn == "Bạn bè") {
+
+    }
+    if (typebtn == "Đã gửi lời mời") {
+
+    }
+    if (typebtn == "Xác nhận") {
+
+    }
 }
 
 $(function() {
@@ -123,7 +138,7 @@ $(function() {
                             <img src="assets/image/user.jpg" height= "30px" width="30px" class="image-user-search" />
                             ` + value.name + `</div>
                             <div class="addFriend">
-                            <button onclick=addFriend("` + value.id + `") class="friend friend` + value.id + `">` + buttonFriend(value.id) + `</button>
+                            <button id="friend` + value.id + `" onclick=addFriend(` + value.id + `) class="friend friend` + value.id + `">` + buttonFriend(value.id) + `</button>
                             <div id="huy` + value.id + `" class="huy huy` + value.id + `"></div>
                             </div>
                             </div>`);

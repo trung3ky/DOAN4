@@ -22,6 +22,23 @@ module.exports = function(app) {
 
     app.get('/search', function(req, res, next) {
         var regex = req.query["term"];
+
+        var searchName = "select * from users where name like '%" + regex + "%'";
+        connection.query(searchName, function(err, result) {
+            if (err) {
+                throw err;
+            }
+            var data = [];
+            for (var i = 0; i < result.length; i++) {
+                var obj = {
+                    name: result[i].name,
+                    image: result[i].image
+                };
+                data.push(obj);
+            }
+            res.send(data, {
+                'Content-Type': 'application/json'
+            }, 200);
         if (isANumber(regex)) {
             var searchName = "select * from user where phone like '%" + regex + "%'";
             connection.query(searchName, function(err, result) {
@@ -62,7 +79,9 @@ module.exports = function(app) {
                 }, 200);
 
             });
-        }
+          } 
     });
+}
 
+);
 }
